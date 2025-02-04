@@ -23,9 +23,13 @@ from langchain_groq import ChatGroq
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.output_parsers import JsonOutputParser
 from langchain.retrievers.multi_query import MultiQueryRetriever
+from dotenv import load_dotenv
+import os
 
-os.environ["HF_TOKEN"]="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"
-os.environ["GROQ_API_KEY"]="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"
+# Load environment variables from .env file
+load_dotenv()
+os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
+os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
 llm=ChatGroq(model="llama3-70b-8192", temperature=0)
 model_name="Alibaba-NLP/gte-large-en-v1.5"
 # model_name="WhereIsAI/UAE-Large-V1"
