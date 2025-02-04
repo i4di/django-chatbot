@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 409.54 122.24">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #00261b;
+        font-family: BentonSans-Book, 'BentonSans Book';
+        font-size: 31px;
+      }
+
+      .cls-2 {
+        letter-spacing: .1em;
+      }
+
+      .cls-3 {
+        letter-spacing: .09em;
+      }
+
+      .cls-4 {
+        letter-spacing: .12em;
+      }
+
+      .cls-5 {
+        fill: #01a684;
+      }
+
+      .cls-6 {
+        letter-spacing: .11em;
+      }
+
+      .cls-7 {
+        letter-spacing: .08em;
+      }
+
+      .cls-8 {
+        letter-spacing: .11em;
+      }
+
+      .cls-9 {
+        letter-spacing: .07em;
+      }
+
+      .cls-10 {
+        letter-spacing: .13em;
+      }
+
+      .cls-11 {
+        letter-spacing: .03em;
+      }
+
+      .cls-12 {
+        letter-spacing: .11em;
+      }
+
+      .cls-13 {
+        letter-spacing: .11em;
+      }
+
+      .cls-14 {
+        letter-spacing: .08em;
+      }
+
+      .cls-15 {
+        letter-spacing: .07em;
+      }
+    </style>
+  </defs>
+  <g id="_1" data-name="1">
+    <g>
+      <text id="Institute_for_Development_Impact" data-name="Institute for Development Impact" class="cls-1" transform="translate(139.38 37.89)"><tspan class="cls-12" x="0" y="0">IN</tspan><tspan class="cls-15" x="38.75" y="0">S</tspan><tspan class="cls-6" x="60.95" y="0">TITUTE </tspan><tspan class="cls-14" x="199.45" y="0">F</tspan><tspan class="cls-12" x="219.35" y="0">OR</tspan><tspan class="cls-4" x="0" y="39">D</tspan><tspan class="cls-13" x="25.85" y="39">E</tspan><tspan class="cls-10" x="48.14" y="39">VE</tspan><tspan class="cls-3" x="95.05" y="39">L</tspan><tspan class="cls-4" x="115.29" y="39">OPMEN</tspan><tspan class="cls-2" x="246.35" y="39">T</tspan><tspan class="cls-8" x="0" y="78">IM</tspan><tspan class="cls-11" x="42.53" y="78">P</tspan><tspan class="cls-9" x="63.39" y="78">A</tspan><tspan class="cls-7" x="86.43" y="78">CT</tspan></text>
+      <g>
+        <polygon class="cls-5" points="0 36.02 59.03 17.8 35.31 56.91 20.03 61.68 0 36.02"/>
+        <polygon class="cls-5" points="97.73 0 42.62 90.65 62.35 115.98 117.52 25.48 97.73 0"/>
+      </g>
+    </g>
+  </g>
+</svg>
