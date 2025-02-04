@@ -14,30 +14,36 @@
             padding: 0;
             background: #121212;
             color: #FFF;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, Poppins 'Trebuchet MS', sans-serif, Georgia, Times, 'Times New Roman', serif;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, Poppins, 'Trebuchet MS', sans-serif;
         }
 
+        /* Full-Screen Chatbot */
         .chat-container {
-            height: 100vh; /* Ensure the chat container takes up the full height */
-            width: 100%;  /* Full width */
+            height: 100vh;
+            width: 100vw;
             background: #1E1E2E;
             display: flex;
             flex-direction: column;
             transition: transform 0.3s ease-in-out;
-            transform: translateY(100%); /* Initially hide the chat */
+            transform: translateY(100%);
             position: fixed;
-            bottom: 0;
+            top: 0;
             left: 0;
+            z-index: 999;
         }
+
 
         .card-header {
             background: #3A3A55;
-            padding: 10px;
-            flex-shrink: 0; /* Prevent shrinking */
+            padding: 15px;
+            display: flex;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .msg_card_body {
-            flex: 1; /* Take up remaining space */
+            flex: 1;
             padding: 15px;
             overflow-y: auto;
             background: #2A1055;
@@ -48,8 +54,8 @@
         .card-footer {
             background: #3A3A55;
             padding: 20px;
-            flex-shrink: 0; /* Prevent shrinking */
-            margin-bottom: 60px; /* Space for the toggle button */
+            flex-shrink: 0;
+            margin-bottom:80px;
         }
 
         .input-group-text {
@@ -76,29 +82,75 @@
             align-self: flex-start;
         }
 
-        .toggle-chat-btn {
+        /* Floating Chat Icon */
+        .chat-icon {
             position: fixed;
-            bottom: 10px; /* Space below the input area */
+            bottom: 15px;
             right: 20px;
-            background-color: #00a17d;
-            border: none;
-            padding: 10px 20px;
-            color: white;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-            font-size: 16px;
-            border-radius: 5px;
+            width: 50px;
+            height: 50px;
+            background: #00a17d;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
             cursor: pointer;
+            transition: background 0.3s ease-in-out;
             z-index: 1000;
+        }
+
+  .chat-toggle-container {
+    position: fixed;
+    bottom: 20px;
+    right: 80px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+/* Chat Text */
+.chat-text {
+    margin-left: 10px;
+    font-size: 16px;
+    color: white;
+    background: #00a17d;
+    padding: 8px 12px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease-in-out;
+}
+
+.chat-text:hover {
+    background: #008f6a;
+}
+
+        .chat-icon i {
+            color: white;
+            font-size: 24px;
+        }
+
+        /* Close Button */
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <!-- Chatbot Container (Initially Hidden) -->
     <div class="chat-container">
-        <div class="card-header d-flex align-items-center">
-            <img src="{% static 'images/full-Logo-SVG.svg' %}" class="rounded-circle" width="40" height="40"/>
-            <span class="ml-2">ChatBot</span>
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <img src="{% static 'images/full-Logo-SVG.svg' %}" class="rounded-circle" width="40" height="40"/>
+                <span class="ml-2">ChatBot</span>
+            </div>
         </div>
-        <div id="messageFormeight" class="msg_card_body d-flex flex-column"></div>
+        <div id="messageFormeight" class="msg_card_body"></div>
         <div class="card-footer">
             <form id="messageArea" class="input-group">
                 <input type="text" id="text" name="msg" placeholder="Ask your question..." class="form-control" required/>
@@ -109,56 +161,62 @@
         </div>
     </div>
 
-    <!-- Toggle button below the message input -->
-    <button class="toggle-chat-btn" id="toggleChat">Open Chatbot</button>
-
+    <!-- Chat Icon -->
+     
+    <!-- Chat Icon with Text -->
+<div class="chat-toggle-container" id="toggleChat">
+  <div class="chat-icon">
+      <i class="fas fa-comments"></i>
+  </div>
+  <span class="chat-text">Got Questions about I4DI, Chat with us</span>
+</div>
     <script>
         function getCSRFToken() {
             return document.cookie.split('; ')
-                .find(row => row.startsWith('csrftoken='))
-                ?.split('=')[1];
+                .find(row => row.startsWith('csrftoken='))?.split('=')[1];
         }
 
         $(document).ready(function () {
-            // Add initial message when page loads
-            const initialMessage = '<div class="d-flex justify-content-start mb-4"><div class="msg_cotainer">Hello, I am an I4DI chat machine. I can help you find answers about services provided by I4DI, details about I4DI\'s focus areas and employees, numerous projects and activities conducted by I4DI, best ways to partner with I4DI, and a lot more. How can I help you today!</div></div>';
-            $("#messageFormeight").append(initialMessage);
+    let isChatOpen = false;
 
-            $("#messageArea").on("submit", function (event) {
-                event.preventDefault();
-                let rawText = $("#text").val();
-                let userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + '</div></div>';
-                $("#text").val("");
-                $("#messageFormeight").append(userHtml);
+    // Initial chatbot message
+    const initialMessage = '<div class="d-flex justify-content-start mb-4"><div class="msg_cotainer">Hello, I am an I4DI chat machine. I can help you find answers about services provided by I4DI, details about I4DI\'s focus areas and employees, numerous projects and activities conducted by I4DI, best ways to partner with I4DI, and a lot more. How can I help you today!</div></div>';
+    $("#messageFormeight").append(initialMessage);
 
-                $.ajax({
-                    url: "/",  // Update this if necessary
-                    type: "POST",
-                    data: { message: rawText },
-                    headers: { "X-CSRFToken": getCSRFToken() },
-                    success: function (data) {
-                        let botHtml = '<div class="d-flex justify-content-start mb-4"><div class="msg_cotainer">' + data.response + '</div></div>';
-                        $("#messageFormeight").append(botHtml);
-                    },
-                    error: function () {
-                        let errorHtml = '<div class="d-flex justify-content-start mb-4"><div class="msg_cotainer">Error connecting to chatbot.</div></div>';
-                        $("#messageFormeight").append(errorHtml);
-                    }
-                });
-            });
+    $("#messageArea").on("submit", function (event) {
+        event.preventDefault();
+        let rawText = $("#text").val();
+        let userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + '</div></div>';
+        $("#text").val("");
+        $("#messageFormeight").append(userHtml);
 
-            // Toggle chatbot visibility
-            $("#toggleChat").on("click", function() {
-                const chatContainer = $(".chat-container");
-                if (chatContainer.css("transform") === "matrix(1, 0, 0, 1, 0, 0)") {
-                    chatContainer.css("transform", "translateY(100%)");  // Hide the chat
-                    $(this).text("Open Chatbot");
-                } else {
-                    chatContainer.css("transform", "translateY(0)");  // Show the chat
-                    $(this).text("Close Chatbot");
-                }
-            });
+        $.ajax({
+            url: "/",  // Update this if necessary
+            type: "POST",
+            data: { message: rawText },
+            headers: { "X-CSRFToken": getCSRFToken() },
+            success: function (data) {
+                let botHtml = '<div class="d-flex justify-content-start mb-4"><div class="msg_cotainer">' + data.response + '</div></div>';
+                $("#messageFormeight").append(botHtml);
+            },
+            error: function () {
+                let errorHtml = '<div class="d-flex justify-content-start mb-4"><div class="msg_cotainer">Error connecting to chatbot.</div></div>';
+                $("#messageFormeight").append(errorHtml);
+            }
         });
+    });
+
+    // Toggle Chatbot
+    $("#toggleChat").on("click", function() {
+        if (isChatOpen) {
+            $(".chat-container").css("transform", "translateY(100%)");
+        } else {
+            $(".chat-container").css("transform", "translateY(0)");
+        }
+        isChatOpen = !isChatOpen; // Toggle state
+    });
+});
+
     </script>
 </body>
 </html>
